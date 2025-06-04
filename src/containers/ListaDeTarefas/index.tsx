@@ -1,12 +1,28 @@
+import Tarefa from '../../components/Tarefa/index'
+import { Container } from './styles'
+
 const ListaDeTarefas = () => {
   return (
-    <main>
+    <Container>
       <p>2 tarefas marcadas como concluídas</p>
       <ul>
-        <li>Tarefa 1</li>
-        <li>Tarefa 2</li>
+        <li>
+          <Tarefa />
+        </li>
+        <li>
+          <Tarefa />
+        </li>
+        <li>
+          <Tarefa />
+        </li>
+        <li>
+          <Tarefa />
+        </li>
+        <li>
+          <Tarefa />
+        </li>
       </ul>
-    </main>
+    </Container>
   )
 }
 
