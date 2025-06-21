@@ -1,35 +1,49 @@
+import { useSelector } from 'react-redux'
 import Tarefa from '../../components/Tarefa/index'
 import { Container } from './styles'
-
-const tarefas = [
-  {
-    titulo: 'estudar Type',
-    descricao: 'ver a aula 3 da ebac',
-    prioridade: 'importante',
-    status: 'pendente'
-  },
-  {
-    titulo: 'Pagar a conta de internet',
-    descricao: 'pagar antes do dia 5',
-    prioridade: 'importante',
-    status: 'concluida'
-  },
-  {
-    titulo: 'ir treinar',
-    descricao: 'fazer treino de perna',
-    prioridade: 'importante',
-    status: 'pendente'
-  }
-]
+import { RootReducer } from '../../store'
 
 const ListaDeTarefas = () => {
+  const { itens } = useSelector((state: RootReducer) => state.tarefas)
+  const { termo, criterio, valor } = useSelector(
+    (state: RootReducer) => state.filtro
+  )
+
+  const filtroTarefas = () => {
+    let tarefasFiltradas = itens
+    if (termo !== undefined) {
+      tarefasFiltradas = tarefasFiltradas.filter(
+        (item) => item.titulo.toLowerCase().search(termo.toLowerCase()) >= 0
+      )
+      if (criterio === 'prioridade') {
+        tarefasFiltradas = tarefasFiltradas.filter(
+          (item) => item.prioridade === valor
+        )
+      } else if (criterio === 'status') {
+        tarefasFiltradas = tarefasFiltradas.filter(
+          (item) => item.status === valor
+        )
+      }
+      return tarefasFiltradas
+    } else {
+      return itens
+    }
+  }
   return (
     <Container>
-      <p>2 tarefas marcadas como concluídas</p>
+      <p>
+        2 tarefas marcadas com: &quot;categoria&ldquo; e &quot;{termo}&ldquo;
+      </p>
       <ul>
-        {tarefas.map((t) => (
+        <li>{termo}</li>
+        <li>{criterio}</li>
+        <li>{valor}</li>
+      </ul>
+      <ul>
+        {filtroTarefas().map((t) => (
           <li key={t.titulo}>
             <Tarefa
+              id={t.id}
               descricao={t.descricao}
               titulo={t.titulo}
               status={t.status}
