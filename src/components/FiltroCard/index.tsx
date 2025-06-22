@@ -12,10 +12,9 @@ export type Props = {
 
 const FiltroCard = ({ legenda, criterio, valor }: Props) => {
   const dispatch = useDispatch()
-  const filtro = useSelector((state: RootReducer) => state.filtro)
-  const tarefas = useSelector((state: RootReducer) => state.tarefas)
+  const { filtro, tarefas } = useSelector((state: RootReducer) => state)
 
-  const verificarEstaAtivo = () => {
+  const verificaEstaAtivo = () => {
     const mesmoCriterio = filtro.criterio === criterio
     const mesmoValor = filtro.valor === valor
 
@@ -23,9 +22,7 @@ const FiltroCard = ({ legenda, criterio, valor }: Props) => {
   }
 
   const contarTarefas = () => {
-    if (criterio === 'todas') {
-      return tarefas.itens.length
-    }
+    if (criterio === 'todas') return tarefas.itens.length
     if (criterio === 'prioridade') {
       return tarefas.itens.filter((item) => item.prioridade === valor).length
     }
@@ -35,16 +32,11 @@ const FiltroCard = ({ legenda, criterio, valor }: Props) => {
   }
 
   const filtrar = () => {
-    dispatch(
-      alterarFiltro({
-        criterio,
-        valor
-      })
-    )
+    dispatch(alterarFiltro({ criterio, valor }))
   }
 
   const contador = contarTarefas()
-  const ativo = verificarEstaAtivo()
+  const ativo = verificaEstaAtivo()
 
   return (
     <S.Card ativo={ativo} onClick={filtrar}>
